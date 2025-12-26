@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/x-icon" href="logo.jpeg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ShopSphere</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{
+  font-family:'Inter',sans-serif;
+  background:#fff1df;
+  color:#111;
+}
+h1,h2,h3{font-family:'Playfair Display',serif}
+
+/* underline hover */
+.hover-underline{
+  position:relative;
+}
+.hover-underline::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-6px;
+  width:0;height:2px;
+  background:#111;
+  transition:.4s;
+}
+.hover-underline:hover::after{
+  width:100%;
+}
+
+/* hero lines */
+.lines span{
+  position:absolute;
+  width:2px;height:160px;
+  background:rgba(0,0,0,.15);
+  animation:lines 6s linear infinite;
+}
+.lines span:nth-child(1){left:20%}
+.lines span:nth-child(2){left:40%;animation-delay:1s}
+.lines span:nth-child(3){left:60%;animation-delay:2s}
+.lines span:nth-child(4){left:80%;animation-delay:3s}
+@keyframes lines{
+  from{top:-200px}
+  to{top:100%}
+}
+
+/* floating strip animation */
+@keyframes floatX{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+.float-strip{
+  display:flex;
+  width:max-content;
+  animation:floatX 35s linear infinite;
+}
+.float-strip:hover{
+  animation-play-state:paused;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 backdrop-blur bg-white/70 px-8 py-4 flex justify-between items-center">
+  <div class="text-2xl font-bold">Shop<span>Sphere</span></div>
+  <div class="flex gap-5 text-lg">
+    <a href="https://youtube.com/@shopsphere2094?si=cWUSNt0uIcR_sdIg" target="_blank"><i class="fab fa-youtube hover:scale-110 transition"></i></a>
+    <a href="https://wa.me/919324317757" target="_blank"><i class="fab fa-whatsapp hover:scale-110 transition"></i></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative h-[90vh] flex items-center justify-center text-center overflow-hidden">
+  <div class="lines absolute inset-0">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="relative z-10 max-w-3xl px-6">
+    <h1 class="text-5xl md:text-6xl mb-4">
+      Customized Products <span class="hover-underline">by ShopSphere</span>
+    </h1>
+    
+    <p class="italic text-gray-500 mb-8">From chic handbags to travel-ready jewelry boxes,  makeup pouch and sling bag - our customized collection turns everyday essentials into one-of-a-kind keepsakes. Just pick your piece, add your name, and carry your story everywhere.</p>
+    <button onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})"
+      class="px-10 py-3 border border-black rounded-full hover:bg-black hover:text-white transition">
+      Explore Collection
+    </button>
+  </div>
+</section>
+
+<!-- SECTION HEADER -->
+<section class="px-8 mt-20 mb-10 text-center">
+  <h2 class="text-4xl mb-3 hover-underline inline-block">Our Products</h2>
+  <p class="text-gray-500">​"Designed for moments. Personalized for you.".</p>
+</section>
+
+<!-- FLOATING STRIP -->
+<!-- <section class="overflow-hidden py-10 bg-white">
+  <div class="float-strip gap-10 px-10">
+    <template id="stripItem">
+      <div class="w-[160px] aspect-[3/4] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition">
+        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1520975922324-4c2a7f75e65b">
+      </div>
+    </template>
+    <script>
+      const strip = document.currentScript.parentElement;
+      for(let i=0;i<12;i++){
+        strip.insertAdjacentHTML("beforeend", document.getElementById("stripItem").innerHTML);
+      }
+    </script>
+  </div>
+</section> -->
+
+<!-- PRODUCTS -->
+<section id="products" class="px-8 py-20">
+  <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10"></div>
+</section>
+
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50" onclick="closeModal(event)">
+  <div class="bg-white rounded-3xl p-6 max-w-3xl w-[90%] relative">
+    <button class="absolute top-4 right-5 text-xl" onclick="closeModal()">✕</button>
+
+    <div class="relative h-[420px] overflow-hidden rounded-2xl mb-4">
+      <img id="slideImg" class="w-full h-full object-cover">
+      <button class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-2" onclick="prev()">❮</button>
+      <button class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 text-white px-3 py-2" onclick="next()">❯</button>
+    </div>
+
+    <h3 id="mTitle" class="text-2xl mb-1"></h3>
+    <p id="mDesc" class="text-gray-600"></p>
+    <p id="mPrice" class="mt-2 font-semibold"></p>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="px-8 py-20 bg-white text-center">
+  <h2 class="text-4xl mb-6 hover-underline inline-block">About ShopSphere</h2>
+  <p class="max-w-3xl mx-auto text-gray-600 mb-10">
+    From chic handbags to travel-ready jewelry boxes,  makeup pouch and sling bag - our customized collection turns everyday essentials into one-of-a-kind keepsakes. Just pick your piece, add your name, and carry your story everywhere.
+  </p>
+
+  <div class="flex justify-center gap-8 text-2xl">
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram hover:scale-110"></i></a>
+    <a href="https://wa.me/919324317757" target="_blank"><i class="fab fa-whatsapp hover:scale-110"></i></a>
+    <a href="insha20194@email.com"><i class="fas fa-envelope hover:scale-110"></i></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white px-8 py-12">
+  <div class="grid md:grid-cols-3 gap-10">
+    <div>
+      <h3 class="text-xl mb-3">ShopSphere</h3>
+      <p class="text-gray-400 text-sm">Premium product experience for modern brands.</p>
+    </div>
+
+    <div>
+      <h4 class="mb-3">Contact</h4>
+      <p>Email: insha20194@email.com</p>
+      <p>WhatsApp: +91 9324317757</p>
+    </div>
+
+    <div>
+      <iframe class="w-full h-40 rounded-xl"
+        src="https://maps.google.com/maps?q=india&t=&z=5&ie=UTF8&iwloc=&output=embed">
+      </iframe>
+    </div>
+  </div>
+
+  <p class="text-center text-gray-500 text-sm mt-10">
+    © 2025 ShopSphere. All rights reserved.
+  </p>
+</footer>
+
+<script>
+// === EDITABLE PRODUCTS ARRAY ===
+const products = [
+  {
+    title: "Customized Makeup Pouch / Travelling Pouch",
+    price: "₹420",
+    whatsapp: "919324317757",
+    cardImg: "makep1.jpeg",
+    images: [
+      "makep1.jpeg",
+      "makep2.jpeg",
+      "makep3.jpeg",
+      "makep4.jpeg",
+      "makep5.jpeg",
+      "makep6.jpeg",
+      "makep7.jpeg",
+      "makep8.jpeg",
+      "makep9.jpeg",
+      "makep10.jpeg",
+      "makep11.jpeg",
+      "makep12.jpeg",
+
+    
+    ]
+  },
+  {
+    title: "Customized Sling Bag ",
+    price: "₹450",
+    whatsapp: "919324317757",
+    cardImg: "sli1.jpeg",
+
+    images: [
+      "sli1.jpeg",
+      "sli2.jpeg",
+      "sli3.jpeg",
+      
+    ]
+  },
+   {
+    title: "Customized Handbag",
+    price: "₹750",
+    whatsapp: "919324317757",
+    cardImg: "hand1.jpeg",
+    images: [
+      "hand1.jpeg",
+      "hand2.jpeg",
+      "hand3.jpeg",
+      "hand4.jpeg",
+      "hand5.jpeg",
+      "hand6.jpeg",
+      
+    ]
+  },
+  {
+    title: "Customized Jewelry Box",
+    price: "₹520",
+    whatsapp: "919324317757",
+    cardImg: "jew1.jpeg",
+    images: [
+      "jew1.jpeg",
+      "jew2.jpeg",
+      "jew3.jpeg",
+      "jew4.jpeg",
+      "jew5.jpeg",
+      "jew6.jpeg",
+      "jew7.jpeg",
+      "jew8.jpeg",
+      "jew9.jpeg",
+      "jew10.jpeg",
+      "jew11.jpeg",
+      
+      
+    ]
+  },
+  // Add more products here, just follow the same object structure
+];
+
+// === RENDER PRODUCTS GRID ===
+const grid = document.getElementById("productGrid");
+products.forEach((p,i)=>{
+  grid.innerHTML += `
+  <div class="bg-white rounded-3xl p-4 shadow-lg hover:-translate-y-3 hover:shadow-2xl transition cursor-pointer"
+       onclick="openModal(${i})">
+    <img src="${p.cardImg}" class="rounded-2xl aspect-[3/4] object-cover w-full">
+    <h3 class="mt-4 hover-underline">${p.title}</h3>
+    <p class="text-gray-500">${p.price}</p>
+    <a href="https://wa.me/${p.whatsapp}" target="_blank"
+      class="inline-block mt-3 px-6 py-2 border border-black rounded-full hover:bg-black hover:text-white transition">
+      Order on WhatsApp
+    </a>
+  </div>`;
+});
+
+// === MODAL LOGIC ===
+let current=0, img=0, auto;
+function openModal(i){
+  current=i; img=0; update();
+  modal.style.display="flex";
+  auto=setInterval(next,3000);
+}
+function closeModal(e){
+  if(!e || e.target.id==="modal"){
+    modal.style.display="none";
+    clearInterval(auto);
+  }
+}
+function update(){
+  slideImg.src = products[current].images[img];
+  mTitle.innerText = products[current].title;
+  mPrice.innerText = products[current].price;
+}
+function next(){img=(img+1)%products[current].images.length; update();}
+function prev(){img=(img-1+products[current].images.length)%products[current].images.length; update();}
+</script>
+
+</body>
+</html>
